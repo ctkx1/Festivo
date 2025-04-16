@@ -1,11 +1,10 @@
-import { Text, View } from "react-native";
+import { Text, View } from "react-native"
 
-const Map = ()=> {
-    return (
-        <View className="flex-1 items-center justify-center">
-            <Text className="text-5xl text-[#333] font-bold">MAP</Text>
-        </View>
-    );
+const Map = () => {
+	return (
+		<View className='flex-1 items-center justify-center'>
+			<Text className='text-5xl text-[#333] font-bold'>MAPATEST</Text>
+		</View>
+	)
 }
-export default Map;
-
+export default Map
