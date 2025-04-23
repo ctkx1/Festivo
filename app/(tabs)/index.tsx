@@ -1,10 +1,12 @@
-import { Text, View } from "react-native";
-import {Link} from "expo-router";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
+import Weather from "../components/homepage/weather/Weather"
 
 export default function Index() {
-  return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="text-5xl text-[#333] font-bold">HOME</Text>
-    </View>
-  );
+	return (
+		<SafeAreaProvider>
+			<SafeAreaView className='bg-black flex-1'>
+				<Weather />
+			</SafeAreaView>
+		</SafeAreaProvider>
+	)
 }
