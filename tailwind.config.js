@@ -7,8 +7,8 @@ module.exports = {
     extend: {
       colors: {
         accent: "#f8b24b",
-      }
+      },
     },
   },
   plugins: [],
-}
+};

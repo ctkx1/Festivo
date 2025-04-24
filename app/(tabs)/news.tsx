@@ -12,8 +12,13 @@ const News = () => {
 
   const openPostDetail = (postId: number) => {
     const post = dummyposty.find(item => item.id === postId);
+
+    if (post) {
     setSelectedPost(post);
     setModalVisible(true);
+    } else {
+      console.warn(`Post o ID ${postId} nie został znaleziony.`);
+    }
   };
 
   const renderPostDetail = () => {
@@ -26,10 +31,10 @@ const News = () => {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View className="flex-1 bg-black bg-opacity-95">
+        <View className="flex-1 bg-black bg-opacity-95 justify-center items-center">
           <View className="flex-1">
             <TouchableOpacity 
-              className="absolute top-12 right-4 z-10 bg-gray-800 p-2 rounded-full" 
+              className="absolute top-12 right-4 z-10 bg-gray-800 p-2 rounded-full border border-white" 
               onPress={() => setModalVisible(false)}
             >
               <Ionicons name="close" size={24} color="white" />
@@ -39,11 +44,11 @@ const News = () => {
               <Image 
                 source={selectedPost.image} 
                 style={{width: '90%', height: windowHeight * 0.3, marginLeft: '5%'}} 
-                className="rounded-md" 
+                className="rounded-md border border-accent" 
                 resizeMode="cover"
               />
               <View className="p-4">
-                <Text className="text-white text-2xl font-bold mb-4">{selectedPost.title}</Text>
+                <Text className="text-accent text-2xl font-bold mb-4">{selectedPost.title}</Text>
                 <Text className="text-gray-300">{selectedPost.description}</Text>
               </View>
             </ScrollView>
@@ -56,7 +61,7 @@ const News = () => {
   return (
     <View className="flex-1 bg-black">
       <View className="pb-4 px-4">
-        <Text className="text-white text-2xl font-bold text-center">News</Text>
+        <Text className="text-accent text-2xl font-bold text-center pt-5">News</Text>
       </View>
       <FlatList 
         data={dummyposty.slice(1)}

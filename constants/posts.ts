@@ -11,7 +11,8 @@ export const dummyposty = [
     {
       id: 1,
       title: 'Amerykańskie gwiazdy wystąpią w Kołobrzegu!',
-      image: require('@/assets/images/tydollasign.jpg'),
+      image: require('@/assets/images/bambi.jpg'),
+      // image: require('@/assets/images/tydollasign.jpg'),
       description: 'Amerykańskie gwiazdy wystąpią w Kołobrzegu! Amerykańskie gwiazdy wystąpią w Kołobrzegu!Amerykańskie gwiazdy wystąpią w Kołobrzegu! Amerykańskie gwiazdy wystąpią w Kołobrzegu! Amerykańskie gwiazdy wystąpią w Kołobrzegu!',
     },
     {
