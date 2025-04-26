@@ -12,7 +12,7 @@ const Weather = () => {
 			.catch(err => console.log(err))
 	}, [])
 	return (
-		<View className='pl-9 py-12'>
+		<View className='px-9 py-8'>
 			{weather ? (
 				<>
 					<View className='flex items-start'>
