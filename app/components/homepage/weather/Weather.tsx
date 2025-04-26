@@ -12,12 +12,12 @@ const Weather = () => {
 			.catch(err => console.log(err))
 	}, [])
 	return (
-		<View className='flex-1 pl-10 pt-5'>
+		<View className='pl-9 py-12'>
 			{weather ? (
 				<>
 					<View className='flex items-start'>
 						<View className='flex flex-row items-center'>
-							<Text className='text-white text-7xl'>
+							<Text className='text-white text-8xl'>
 								{Math.round(weather.main.temp)}
 								<Text className='text-accent'>°</Text>
 							</Text>
@@ -28,7 +28,7 @@ const Weather = () => {
 								style={{ width: 100, height: 100 }}
 							/>
 						</View>
-						<Text className='text-white text-3xl pl-3'>{weather.name}</Text>
+						<Text className='text-white text-3xl'>{weather.name}</Text>
 					</View>
 				</>
 			) : (

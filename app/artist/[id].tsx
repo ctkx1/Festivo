@@ -19,7 +19,7 @@ const ArtistsDetails = () => {
 	if (!artist) {
 		return (
 			<SafeAreaProvider>
-				<SafeAreaView className='bg-black flex-1 justify-center items-center'>
+				<SafeAreaView className='bg-slate-900 flex-1 justify-center items-center'>
 					<Text className='text-white text-xl'>Artysta nie znaleziony</Text>
 				</SafeAreaView>
 			</SafeAreaProvider>
@@ -28,7 +28,7 @@ const ArtistsDetails = () => {
 
 	return (
 		<SafeAreaProvider>
-			<SafeAreaView className='bg-black flex-1'>
+			<SafeAreaView className='bg-slate-900 flex-1'>
 				<View className='relative'>
 					<Image
 						className='w-full h-80'
