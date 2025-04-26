@@ -32,7 +32,7 @@ const Info = () => {
 	return (
 		<>
 			<View>
-				<Text className='text-white uppercase px-9 font-bold text-lg'>
+				<Text className='text-white uppercase px-9 font-bold text-lg pb-3'>
 					info
 				</Text>
 			</View>
@@ -40,7 +40,7 @@ const Info = () => {
 				data={Informations}
 				numColumns={2}
 				keyExtractor={item => item.id.toString()}
-				contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 10 }}
+				contentContainerStyle={{ paddingHorizontal: 16 }}
 				columnWrapperStyle={{ justifyContent: "center" }}
 				scrollEnabled={false}
 				renderItem={({ item }) => {
