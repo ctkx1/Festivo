@@ -91,7 +91,7 @@ export const ARTISTS: ArtistValue[] = [
 		name: "White 2115",
 		img: require("@/assets/images/white.jpeg"),
 		id: 8,
-		day: "Niedziela",
+		day: "Piątek",
 		spotify: "https://open.spotify.com/artist/1FdfWn1DrRwWDtRK8faYKY",
 		youtube: "https://www.youtube.com/@White2115VEVO",
 		listeners: "2,0 mln",

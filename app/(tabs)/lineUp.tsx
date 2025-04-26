@@ -1,4 +1,12 @@
-import { Button, FlatList, Image, Pressable, Text, View } from "react-native"
+import {
+	Button,
+	FlatList,
+	Image,
+	Pressable,
+	Text,
+	TouchableOpacity,
+	View,
+} from "react-native"
 import { ARTISTS } from "@/constants/artists"
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
 import { useState } from "react"
@@ -15,19 +23,29 @@ const LineUp = () => {
 	const router = useRouter()
 	return (
 		<SafeAreaProvider>
-			<SafeAreaView className='bg-black flex-1'>
+			<SafeAreaView className='bg-slate-900 flex-1'>
 				<View>
 					<Text className='text-center py-4 font-bold color-accent text-4xl'>
 						Line UP
 					</Text>
 					<View className='flex flex-row gap-1 pb-5 justify-center'>
 						{days.map(day => (
-							<Button
+							<TouchableOpacity
 								key={day}
 								onPress={() => setSelectedDay(day)}
-								color={selectedDay === day ? "#f8b24b" : "#fff"}
-								title={day}
-							/>
+								style={{
+									padding: 10,
+									backgroundColor: "transparent",
+								}}>
+								<Text
+									style={{
+										color: selectedDay === day ? "#f8b24b" : "#fff",
+										fontSize: 16,
+										textAlign: "center",
+									}}>
+									{day}
+								</Text>
+							</TouchableOpacity>
 						))}
 					</View>
 					<View className='items-center '>
