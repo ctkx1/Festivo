@@ -19,13 +19,13 @@ const Artists = () => {
 
 	return (
 		<SafeAreaProvider>
-			<SafeAreaView className='pb-8'>
+			<SafeAreaView className='pb-5'>
 				<View className='flex flex-row  justify-between px-9 pb-3'>
 					<Text className='text-white uppercase font-bold text-lg'>
 						Artyści
 					</Text>
 					<Pressable onPress={() => router.push("/(tabs)/lineUp")}>
-						<Text className='text-accent uppercase font-bold text-xl'>
+						<Text className='text-accent uppercase font-bold text-lg'>
 							więcej →
 						</Text>
 					</Pressable>

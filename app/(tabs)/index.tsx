@@ -4,6 +4,7 @@ import Title from "../components/homepage/title/Title"
 import { ScrollView, Text, View } from "react-native"
 import Info from "../components/homepage/info/Info"
 import Artists from "../components/homepage/artists/Artists"
+import HomeNews from "../components/homepage/news/HomeNews"
 
 export default function Index() {
 	return (
@@ -16,6 +17,7 @@ export default function Index() {
 					<Title />
 					<Artists />
 					<Info />
+					<HomeNews />
 				</ScrollView>
 			</SafeAreaView>
 		</SafeAreaProvider>
