@@ -1,4 +1,4 @@
-import { View, Text, TextInput, ActivityIndicator, TouchableOpacity, KeyboardAvoidingView, Platform, Image, Modal } from 'react-native'
+import { View, Text, TextInput, ActivityIndicator, TouchableOpacity, KeyboardAvoidingView, Platform, Image, Modal, SafeAreaView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { FIREBASE_AUTH } from '@/FirebaseConfig';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, User } from 'firebase/auth';
@@ -87,7 +87,7 @@ const Profile = () => {
         visible={ticketModalVisible}
         onRequestClose={closeTicketModal}
       >
-        <View className="flex-1 justify-center items-center bg-black bg-opacity-90">
+        <View className="flex-1 justify-center items-center bg-slate-900 bg-opacity-90">
           <View className="bg-gray-800 p-6 rounded-lg w-4/5 items-center border border-accent">
             {isPurchasing ? (
               <>
@@ -116,8 +116,9 @@ const Profile = () => {
   };
 
   const UserProfileView = () => (
-    <View className="flex-1 bg-black p-6 items-center">
-      <View className="w-28 h-28 bg-gray-900 rounded-full mb-6 overflow-hidden items-center justify-center border border-accent">
+    <SafeAreaView className="flex-1 bg-slate-900 px-3">
+    <View className="flex-1 bg-slate-900 p-6 items-center">
+      <View className="w-28 h-28 bg-slate-900 rounded-full mb-6 overflow-hidden items-center justify-center border border-accent">
         {user?.photoURL ? (
           <Image 
             source={{ uri: user.photoURL }} 
@@ -150,7 +151,7 @@ const Profile = () => {
       </TouchableOpacity>
       
       <TouchableOpacity 
-        className="w-full bg-black p-4 rounded-lg items-center border border-accent" 
+        className="w-full bg-slate-900 p-4 rounded-lg items-center border border-accent" 
         onPress={signOut}
       >
         <Text className="text-accent font-bold text-lg">Wyloguj</Text>
@@ -158,6 +159,7 @@ const Profile = () => {
       
       <TicketPurchaseModal />
     </View>
+    </SafeAreaView>
   );
 
   if (user) {
@@ -165,13 +167,14 @@ const Profile = () => {
   }
 
   return (
+    <SafeAreaView className='flex-1 bg-slate-900 px-3'>
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex-1 justify-center p-6 bg-black"
+      className="flex-1 justify-center p-6 bg-slate-900"
     >
       <Text className="text-accent text-3xl font-bold mb-8 text-center">Zaloguj lub zarejestruj</Text>
       
-      <View className="bg-gray-800 rounded-lg p-4 mb-4">
+      <View className="bg-slate-900 rounded-lg p-4 mb-4">
         <TextInput 
           placeholder="Email" 
           placeholderTextColor="#9CA3AF" 
@@ -211,6 +214,7 @@ const Profile = () => {
         </View>
       )}
     </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
