@@ -1,21 +1,19 @@
-import { ARTISTS } from "@/constants/artists"
+import { useArtists } from "@/services/useArtists"
 import { router } from "expo-router"
-import { FlatList, Image, Pressable, Text, View } from "react-native"
+import {
+	ActivityIndicator,
+	FlatList,
+	Image,
+	Pressable,
+	Text,
+	View,
+} from "react-native"
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
 
 const Artists = () => {
-	const shuffleArtists = () => {
-		const shuffled = [...ARTISTS]
+	const { artists, loading } = useArtists()
 
-		for (let i = shuffled.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1))
-			;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-		}
-
-		return shuffled
-	}
-
-	const artistsToShow = shuffleArtists().slice(0, 10)
+	const artistsToShow = artists.sort(() => Math.random() - 0.5).slice(0, 10)
 
 	return (
 		<SafeAreaProvider>
@@ -30,30 +28,38 @@ const Artists = () => {
 						</Text>
 					</Pressable>
 				</View>
-				<FlatList
-					showsHorizontalScrollIndicator={false}
-					data={artistsToShow}
-					horizontal={true}
-					keyExtractor={item => item.id.toString()}
-					className='pl-8'
-					renderItem={({ item }) => (
-						<Pressable
-							className='pr-4'
-							onPress={() => router.push(`/artist/${item.id}`)}>
-							<View className='pb-8'>
-								<Image
-									className='w-[100px] h-[100px] rounded-full border-[1px] border-accent'
-									key={item.id}
-									source={item.img}
-									alt={item.name}
-								/>
-								<View className='flex flex-row justify-center mt-3'>
-									<Text className='color-accent font-bold'>{item.name}</Text>
+				{loading ? (
+					<ActivityIndicator size='large' color='#f8b24b' />
+				) : (
+					<FlatList
+						showsHorizontalScrollIndicator={false}
+						data={artistsToShow}
+						horizontal={true}
+						keyExtractor={item => item.id.toString()}
+						className='pl-8'
+						renderItem={({ item }) => (
+							<Pressable
+								className='pr-4'
+								onPress={() => router.push(`/artist/${item.id}`)}>
+								<View className='pb-8'>
+									<Image
+										className='w-[100px] h-[100px] rounded-full border-[1px] border-accent'
+										key={item.id}
+										source={{
+											uri: item.img || "https://via.placeholder.com/100",
+										}}
+										alt={item.name}
+									/>
+									<View className='flex flex-row justify-center mt-3'>
+										<Text className='color-accent font-bold capitalize'>
+											{item.name}
+										</Text>
+									</View>
 								</View>
-							</View>
-						</Pressable>
-					)}
-				/>
+							</Pressable>
+						)}
+					/>
+				)}
 			</SafeAreaView>
 		</SafeAreaProvider>
 	)

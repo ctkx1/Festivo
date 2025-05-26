@@ -1,12 +1,12 @@
 import { View, Text, Image } from "react-native"
 import React from "react"
-import { NewsData } from "@/constants/posts"
+import { NewsItem } from "@/interfaces/NewsItem"
 
-const MiniNews = ({ id, title, description, image }: NewsData) => {
+const MiniNews = ({ id, title, description, image }: NewsItem) => {
 	return (
 		<View className='flex-row w-full px-4 py-2 mb-2 border bg-black/70 rounded-lg'>
 			<Image
-				source={image}
+				source={{ uri: image }}
 				style={{ width: 80, height: 80 }}
 				className='rounded-md'
 				resizeMode='cover'
