@@ -1,138 +1,126 @@
-import { useState, useEffect } from 'react'
-import { Alert } from 'react-native'
-import { Session } from '@supabase/supabase-js'
-import { supabase } from '@/lib/supabase'
+// useProfile.ts
+import { useState, useEffect } from "react"
+import { Alert } from "react-native"
+import { Session } from "@supabase/supabase-js"
+import { supabase } from "@/lib/supabase"
 
 export default function useProfile(session: Session) {
-  const [loading, setLoading] = useState(true)
-  const [username, setUsername] = useState('')
-  const [dateOfBirth, setDateOfBirth] = useState<Date | null>(null)
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
-  const [avatarKey, setAvatarKey] = useState(0)
-  const [imageError, setImageError] = useState(false)
+	const [loading, setLoading] = useState(true)
+	const [username, setUsername] = useState("")
+	const [dateOfBirth, setDateOfBirth] = useState<Date | null>(null)
+	const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
+	const [avatarKey, setAvatarKey] = useState(0)
+	const [imageError, setImageError] = useState(false)
 
-  useEffect(() => {
-    if (session) getProfile()
-  }, [session])
-  
-  async function getProfile() {
-    try {
-      setLoading(true)
-      setImageError(false)
-      if (!session?.user) throw new Error('No user on the session!')
+	useEffect(() => {
+		if (session?.user?.id) {
+			getProfile()
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [session?.user?.id])
 
-      const { data, error, status } = await supabase
-        .from('profiles')
-        .select(`username, date_of_birth, avatar_url`)
-        .eq('id', session?.user.id)
-        .single()
-      if (error && status !== 406) {
-        throw error
-      }
+	async function getProfile() {
+		try {
+			setLoading(true)
+			setImageError(false)
+			if (!session?.user) throw new Error("Brak zalogowanego użytkownika")
 
-      if (data) {
-        setUsername(data.username)
-        setDateOfBirth(data.date_of_birth ? new Date(data.date_of_birth) : null)
-        
-        // Handle avatar_url
-        if (data.avatar_url) {
-          console.log('Pobrano URL avatara:', data.avatar_url)
-          
-          // Verify if the avatar URL is accessible
-          try {
-            // Add a cache busting parameter to force a fresh fetch
-            const testUrl = `${data.avatar_url}?t=${Date.now()}`
-            const response = await fetch(testUrl, { method: 'HEAD' })
-            
-            if (response.ok) {
-              setAvatarUrl(testUrl)
-            } else {
-              console.log('Avatar URL is not accessible, status:', response.status)
-              setAvatarUrl(null)
-              setImageError(true)
-            }
-          } catch (fetchError) {
-            console.error('Error verifying avatar URL:', fetchError)
-            setAvatarUrl(null)
-            setImageError(true)
-          }
-        } else {
-          console.log('Brak avatar_url w profilu')
-          setAvatarUrl(null)
-        }
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Błąd podczas pobierania profilu:', error.message)
-        Alert.alert('Błąd', error.message)
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
+			const { data, error, status } = await supabase
+				.from("profilestest")
+				.select("username, date_of_birth, avatar_url")
+				.eq("id", session.user.id)
+				.single()
 
-  async function updateProfile({
-    username,
-    date_of_birth,
-    avatar_url,
-  }: {
-    username: string
-    date_of_birth: Date | null
-    avatar_url: string | null
-  }) {
-    try {
-      setLoading(true)
-      if (!session?.user) throw new Error('No user on the session!')
+			if (error && status !== 406) throw error
 
-      // Convert Date to ISO string for Supabase
-      const dateString = date_of_birth ? date_of_birth.toISOString() : null
+			if (data) {
+				setUsername(data.username)
+				setDateOfBirth(data.date_of_birth ? new Date(data.date_of_birth) : null)
 
-      const updates = {
-        id: session?.user.id,
-        username,
-        date_of_birth: dateString,
-        avatar_url,
-        updated_at: new Date().toISOString(),
-      }
+				if (data.avatar_url) {
+					const testUrl = `${data.avatar_url}?t=${Date.now()}`
+					try {
+						const resp = await fetch(testUrl, { method: "HEAD" })
+						if (resp.ok) {
+							setAvatarUrl(testUrl)
+						} else {
+							setAvatarUrl(null)
+							setImageError(true)
+						}
+					} catch {
+						setAvatarUrl(null)
+						setImageError(true)
+					}
+				} else {
+					setAvatarUrl(null)
+				}
+			}
+		} catch (err) {
+			console.error(err)
+			Alert.alert("Błąd", (err as Error).message)
+		} finally {
+			setLoading(false)
+		}
+	}
 
-      console.log('Aktualizacja profilu:', updates)
+	async function updateProfile({
+		username: newUsername,
+		date_of_birth,
+		avatar_url,
+	}: {
+		username: string
+		date_of_birth: Date | null
+		avatar_url: string | null
+	}) {
+		try {
+			setLoading(true)
+			if (!session?.user) throw new Error("Brak zalogowanego użytkownika")
 
-      const { error } = await supabase.from('profiles').upsert(updates)
+			const updates: Record<string, any> = {
+				username: newUsername,
+			}
 
-      if (error) {
-        console.error('Błąd podczas aktualizacji:', error)
-        throw error
-      } else {
-        Alert.alert('Sukces', 'Dane zostały zaktualizowane')
-        // Update local state
-        setUsername(username)
-        setDateOfBirth(date_of_birth)
-        if (avatar_url !== avatarUrl) {
-          const newAvatarUrl = avatar_url ? `${avatar_url}?t=${Date.now()}` : null
-          setAvatarUrl(newAvatarUrl)
-          setAvatarKey(prevKey => prevKey + 1)
-        }
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert('Błąd', error.message)
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
+			if (date_of_birth) {
+				updates.date_of_birth = date_of_birth.toISOString().split("T")[0]
+			}
 
-  return {
-    loading,
-    username,
-    setUsername,
-    dateOfBirth,
-    setDateOfBirth,
-    avatarUrl,
-    avatarKey,
-    imageError,
-    setImageError,
-    getProfile,
-    updateProfile
-  }
+			if (avatar_url !== null) {
+				updates.avatar_url = avatar_url
+			}
+
+			const { error } = await supabase
+				.from("profilestest")
+				.update(updates)
+				.eq("id", session.user.id)
+
+			if (error) throw error
+
+			Alert.alert("Sukces", "Profil został zaktualizowany")
+			setUsername(newUsername)
+			setDateOfBirth(date_of_birth)
+			if (avatar_url !== avatarUrl) {
+				setAvatarUrl(avatar_url ? `${avatar_url}?t=${Date.now()}` : null)
+				setAvatarKey(k => k + 1)
+			}
+		} catch (err) {
+			console.error(err)
+			Alert.alert("Błąd", (err as Error).message)
+		} finally {
+			setLoading(false)
+		}
+	}
+
+	return {
+		loading,
+		username,
+		setUsername,
+		dateOfBirth,
+		setDateOfBirth,
+		avatarUrl,
+		avatarKey,
+		imageError,
+		setImageError,
+		getProfile,
+		updateProfile,
+	}
 }
