@@ -1,4 +1,3 @@
-// useProfile.ts
 import { useState, useEffect } from "react"
 import { Alert } from "react-native"
 import { Session } from "@supabase/supabase-js"
@@ -64,51 +63,52 @@ export default function useProfile(session: Session) {
 	}
 
 	async function updateProfile({
-		username: newUsername,
-		date_of_birth,
-		avatar_url,
-	}: {
-		username: string
-		date_of_birth: Date | null
-		avatar_url: string | null
-	}) {
-		try {
-			setLoading(true)
-			if (!session?.user) throw new Error("Brak zalogowanego użytkownika")
+  username: newUsername,
+  date_of_birth,
+  avatar_url,
+}: {
+  username: string
+  date_of_birth: Date | null
+  avatar_url: string | null
+}) {
+  try {
+    setLoading(true)
+    if (!session?.user) throw new Error("Brak zalogowanego użytkownika")
 
-			const updates: Record<string, any> = {
-				username: newUsername,
-			}
+    const updates: Record<string, any> = {
+      id: session.user.id, // bardzo ważne!
+      username: newUsername,
+    }
 
-			if (date_of_birth) {
-				updates.date_of_birth = date_of_birth.toISOString().split("T")[0]
-			}
+    if (date_of_birth) {
+      updates.date_of_birth = date_of_birth.toISOString().split("T")[0]
+    }
 
-			if (avatar_url !== null) {
-				updates.avatar_url = avatar_url
-			}
+    if (avatar_url !== null) {
+      updates.avatar_url = avatar_url
+    }
 
-			const { error } = await supabase
-				.from("profilestest")
-				.update(updates)
-				.eq("id", session.user.id)
+    const { error } = await supabase
+      .from("profilestest")
+      .upsert(updates, { onConflict: "id" })
 
-			if (error) throw error
+    if (error) throw error
 
-			Alert.alert("Sukces", "Profil został zaktualizowany")
-			setUsername(newUsername)
-			setDateOfBirth(date_of_birth)
-			if (avatar_url !== avatarUrl) {
-				setAvatarUrl(avatar_url ? `${avatar_url}?t=${Date.now()}` : null)
-				setAvatarKey(k => k + 1)
-			}
-		} catch (err) {
-			console.error(err)
-			Alert.alert("Błąd", (err as Error).message)
-		} finally {
-			setLoading(false)
-		}
-	}
+    Alert.alert("Sukces", "Profil został zaktualizowany")
+    setUsername(newUsername)
+    setDateOfBirth(date_of_birth)
+    if (avatar_url !== avatarUrl) {
+      setAvatarUrl(avatar_url ? `${avatar_url}?t=${Date.now()}` : null)
+      setAvatarKey(k => k + 1)
+    }
+  } catch (err) {
+    console.error(err)
+    Alert.alert("Błąd", (err as Error).message)
+  } finally {
+    setLoading(false)
+  }
+}
+
 
 	return {
 		loading,

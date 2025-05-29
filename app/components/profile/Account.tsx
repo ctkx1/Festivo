@@ -62,18 +62,7 @@ export default function Account({ session }: { session: Session }) {
 				updateProfile={updateProfile}
 				dateOfBirth={dateOfBirth}
 			/>
-
-			<ProfileForm
-				session={session}
-				username={username}
-				setUsername={setUsername}
-				dateOfBirth={dateOfBirth}
-				setDateOfBirth={setDateOfBirth}
-				loading={loading}
-				onSubmit={handleSubmit}
-			/>
-
-			<TouchableOpacity
+			{/* <TouchableOpacity
 				className='w-full bg-accent py-4 px-4 rounded-lg items-center mt-4'
 				onPress={handleBuy}>
 				<Text className='text-black font-bold text-lg'>Kup bilet</Text>
@@ -84,10 +73,27 @@ export default function Account({ session }: { session: Session }) {
 				onClose={closeTicketModal}
 				isPurchasing={isPurchasing}
 				purchaseComplete={purchaseComplete}
-			/>
+			/> */}
+
+			<ProfileForm 
+ 				session={session}
+ 				username={username}
+ 				dateOfBirth={dateOfBirth}
+ 				loading={loading}
+ 				onSave={(newUsername, newDateOfBirth) =>
+ 				  updateProfile({
+ 				    username: newUsername,
+ 				    date_of_birth: newDateOfBirth,
+ 				    avatar_url: avatarUrl ? avatarUrl.split('?')[0] : null,
+   	 				})
+	 				}
+				/>
+
+
+			
 
 			<TouchableOpacity
-				className='bg-transparent border border-accent p-4 rounded-lg mt-4'
+				className='bg-transparent border border-accent p-4 rounded-lg mt-4 w-full'
 				onPress={() => supabase.auth.signOut()}
 				disabled={loading}>
 				<Text className='text-orange-300 font-bold text-center text-lg'>
