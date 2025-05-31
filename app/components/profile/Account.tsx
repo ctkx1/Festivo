@@ -51,10 +51,6 @@ export default function Account({ session }: { session: Session }) {
 					Witaj, {username}!
 				</Text>
 			) : null}
-			<Text className='text-white text-4xl font-bold mb-6'>
-				Zarządzaj swoim kontem
-			</Text>
-
 			<Avatar
 				session={session}
 				username={username}
@@ -75,22 +71,19 @@ export default function Account({ session }: { session: Session }) {
 				purchaseComplete={purchaseComplete}
 			/> */}
 
-			<ProfileForm 
- 				session={session}
- 				username={username}
- 				dateOfBirth={dateOfBirth}
- 				loading={loading}
- 				onSave={(newUsername, newDateOfBirth) =>
- 				  updateProfile({
- 				    username: newUsername,
- 				    date_of_birth: newDateOfBirth,
- 				    avatar_url: avatarUrl ? avatarUrl.split('?')[0] : null,
-   	 				})
-	 				}
-				/>
-
-
-			
+			<ProfileForm
+				session={session}
+				username={username}
+				dateOfBirth={dateOfBirth}
+				loading={loading}
+				onSave={(newUsername, newDateOfBirth) =>
+					updateProfile({
+						username: newUsername,
+						date_of_birth: newDateOfBirth,
+						avatar_url: avatarUrl ? avatarUrl.split("?")[0] : null,
+					})
+				}
+			/>
 
 			<TouchableOpacity
 				className='bg-transparent border border-accent p-4 rounded-lg mt-4 w-full'
